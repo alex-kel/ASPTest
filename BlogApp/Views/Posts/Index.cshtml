@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<BlogApp.Models.Post>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div col-md-12>
+    <h2>All Posts</h2>
+
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="post col-md-4 col-md-offset-4" id="@item.PostId">
+                <div class="postUserName">
+                    @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
+                </div>
+                <hr />
+                <div class="postContent">
+                    @Html.DisplayFor(modelItem => item.Content)
+                </div>
+                <hr/>
+                <div class="postFooter">
+                    <div class="postDate">@Html.DisplayFor(modelItem => item.CreationDate)</div>
+                    @if (User.Identity.GetUserName() == item.ApplicationUser.UserName)
+                {
+                        <a class="postDelete btn-danger" onclick="deletePost(@item.PostId)">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+        
+    }
+</div>
+
+<script>
+    function deletePost(id) {
+        var block = document.getElementById(id)
+        $.post("/Posts/Delete/" + id,
+            {},
+            function (data, status) {
+                if (status == "success") {
+                    block.hidden = true
+                }
+            });
+    }
+</script>
+
+

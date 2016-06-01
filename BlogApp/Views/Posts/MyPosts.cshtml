@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<BlogApp.Models.Post>
+
+@{
+    ViewBag.Title = "My Posts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div col-md-12>
+    <h2>My Posts</h2>
+
+    @foreach (var item in Model)
+    {
+        <div class="row">
+            <div class="post col-md-4 col-md-offset-4">
+                <div class="postUserName">
+                    @User.Identity.GetUserName()
+                </div>
+                <hr />
+                <div class="postContent">
+                    @Html.DisplayFor(modelItem => item.Content)
+                </div>
+                <hr/>
+                <div class="postFooter">
+                    <div class="postDate">@Html.DisplayFor(modelItem => item.CreationDate)</div>
+                    @if (User.Identity.GetUserName() == item.ApplicationUser.UserName)
+                {
+                        <a class="postDelete btn-danger">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <hr />
+    }
+</div>
+
+
